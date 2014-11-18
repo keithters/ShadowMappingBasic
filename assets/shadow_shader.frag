@@ -19,13 +19,13 @@ void main( void )
 	vec3 Diffuse		= vec3( NdotL );
 	vec3 Ambient		= vec3( 0.3 );
 	
-	// Subtract depth bias
-	vec4 ShadowCoord = vShadowCoord / vShadowCoord.w;
-	ShadowCoord.z	-= 0.00005;
+	vec4 ShadowCoord	= vShadowCoord / vShadowCoord.w;
+	float Shadow		= 1.0;
 	
-	// Sample the shadowmap at the current coordinate
-	float Shadow = textureProj( uShadowMap, ShadowCoord );
-	
+	if ( ShadowCoord.z > -1 && ShadowCoord.z < 1 ) {
+		Shadow = textureProj( uShadowMap, ShadowCoord, -0.00005 );
+	}
+
 	Color.rgb = ( Diffuse * Shadow + Ambient ) * vColor.rgb;
 	Color.a	= 1.0;
 }

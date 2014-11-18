@@ -19,14 +19,15 @@ void main( void )
 	highp vec3 Ambient		= vec3( 0.3 );
 
 	highp vec4 ShadowCoord	= vShadowCoord / vShadowCoord.w;
-	ShadowCoord.z -= 0.0005;
+	highp float Shadow		= 1.0;
 	
-	highp float Dist = texture2D( uShadowMap, ShadowCoord.st ).z;
-	highp float Shadow = 1.0;
-	
-	if ( ShadowCoord.w > 0.0 && Dist < ShadowCoord.z )
-	{
-		Shadow = 0.0;
+	if ( ShadowCoord.z > -1.0 && ShadowCoord.z < 1.0 ) {
+		ShadowCoord.z -= 0.0005;
+		highp float Dist = texture2D( uShadowMap, ShadowCoord.st ).z;
+		
+		if ( ShadowCoord.w > 0.0 && Dist < ShadowCoord.z ) {
+			Shadow = 0.0;
+		}
 	}
 	
 	gl_FragColor.rgb	= ( Diffuse * Shadow + Ambient ) * vColor.rgb;

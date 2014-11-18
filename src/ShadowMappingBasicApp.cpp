@@ -88,7 +88,7 @@ void ShadowMappingBasic::setup()
 	mFbo = gl::Fbo::create( FBO_WIDTH, FBO_HEIGHT, fboFormat );
 	
 	// Set up camera from the light's viewpoint
-	mLightCam.setPerspective( 100.0f, mFbo->getAspectRatio(), 0.5f, 50.0f );
+	mLightCam.setPerspective( 100.0f, mFbo->getAspectRatio(), 0.5f, 7.0f );
 	mLightCam.lookAt( mLightPos, vec3( 0.0f ) );
 	
 	try {
@@ -166,7 +166,7 @@ void ShadowMappingBasic::draw()
 	gl::setMatrices( mCam );
 	gl::viewport( toPixels( getWindowSize() ) );
 	
-	gl::ScopedTextureBind tex( mShadowMapTex, 0 );
+	gl::ScopedTextureBind tex( mShadowMapTex, (uint8_t) 0 );
 	vec3 mvLightPos		= vec3( gl::getModelView() * vec4( mLightPos, 1.0f ) ) ;
 	mat4 shadowMatrix	= mLightCam.getProjectionMatrix() * mLightCam.getViewMatrix();
 
